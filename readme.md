@@ -29,7 +29,7 @@ The pothole detection system is designed to:
 
 ### `test.mp4`
 
-This [video file](https://github.com/akshxyjagtap/Data-Science/blob/0b2fc3ba50c6f3c7f9e0bad76142409721866547/Pothole%20detection/test.mp4) contains footage of roads with potholes, used for testing the pothole detection system.
+This [video file](https://github.com/akshxyjagtap/Pothole-Detection-System-using-YOLO-Tiny-v4/blob/6b62af71427b198d772750a8daf432ebde423bb5/test.mp4) contains footage of roads with potholes, used for testing the pothole detection system.
 
 
 
@@ -37,7 +37,7 @@ This [video file](https://github.com/akshxyjagtap/Data-Science/blob/0b2fc3ba50c6
 
 These are the output files:
 
-- [video file](https://github.com/akshxyjagtap/Data-Science/blob/0b2fc3ba50c6f3c7f9e0bad76142409721866547/Pothole%20detection/result.avi) contains the resulting video with detected potholes highlighted.
+- [video file](https://github.com/akshxyjagtap/Pothole-Detection-System-using-YOLO-Tiny-v4/blob/6b62af71427b198d772750a8daf432ebde423bb5/result.avi) contains the resulting video with detected potholes highlighted.
 - `pothole_coordinate/` is a folder that saves the location coordinates of detected potholes.
 
 ## Files and Directory Structure
