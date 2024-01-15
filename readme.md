@@ -1,3 +1,4 @@
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 # Pothole Detection System using YOLOv4 Tiny
 
 This repository contains a Python-based system for detecting potholes in a video stream using YOLOv4 Tiny object detection.
