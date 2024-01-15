@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pothole Detection: A Geospatial Approach</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Arial', sans-serif;
+            background-color: #ecf0f1;
+        }
+
+        #map {
+            flex: 1;
+        }
+
+        #header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #search-container {
+            text-align: center;
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #pincode-input {
+            padding: 8px;
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+        #search-button {
+            padding: 8px;
+            background-color: #2ecc71;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #search-button:hover {
+            background-color: #27ae60;
+        }
+
+        #summary-container {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #summary-container h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        #summary-container p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .popup-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div id="title">Pothole Detection Using A Geospatial Approach</div>
+    </div>
+
+    <div id="search-container">
+        <label for="pincode-input">Search by Pincode:</label>
+        <input type="text" id="pincode-input" placeholder="Enter Pincode" onkeydown="if(event.key==='Enter') searchByPincode()">
+        <button id="search-button" onclick="searchByPincode()">Search</button>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="summary-container"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([20.5937, 78.9629], 5);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var potholeData;
+
+        fetch('utils/pothole_data.json')
+            .then(response => response.json())
+            .then(data => {
+                potholeData = data;
+                potholeData.forEach(data => {
+                    addMarker(data.lat, data.lng, data.imageURL, data.pincode, data.timestamp);
+                });
+            })
+            .catch(error => console.error('Error loading pothole data:', error));
+
+        function addMarker(lat, lng, imageURL, pincode, timestamp) {
+            var marker = L.marker([lat, lng]).addTo(map);
+
+            var formattedTimestamp = new Date(timestamp).toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit', 
+                timeZone: 'UTC' 
+            });
+
+            var popupContent = `<div class="popup-content">`;
+            popupContent += `<img class="popup-image" src="${imageURL}" alt="Pothole Image"><br>`;
+            popupContent += `Pincode: ${pincode}<br>`;
+            popupContent += `Timestamp: ${formattedTimestamp}</div>`;
+
+            marker.bindPopup(popupContent);
+        }
+
+        function searchByPincode() {
+            var pincode = document.getElementById('pincode-input').value.trim();
+            var summaryContainer = document.getElementById('summary-container');
+
+            if (!pincode) {
+                alert('Please enter a pincode.');
+                return;
+            }
+
+            var potholesInArea = potholeData.filter(function(data) {
+                return data.pincode === pincode;
+            });
+
+            if (potholesInArea.length > 0) {
+                map.setView([potholesInArea[0].lat, potholesInArea[0].lng], 10);
+
+                var summaryHTML = `<h3>Summary for Pincode: ${pincode}</h3>`;
+                summaryHTML += `<p>Number of potholes: ${potholesInArea.length}</p>`;
+                // Add more information as needed
+
+                summaryContainer.innerHTML = summaryHTML;
+            } else {
+                alert('No potholes found for the given pincode.');
+                summaryContainer.innerHTML = '';
+            }
+        }
+    </script>
+</body>
+</html>
