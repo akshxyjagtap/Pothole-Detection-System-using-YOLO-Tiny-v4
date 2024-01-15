@@ -1,3 +1,4 @@
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 # Pothole Detection System using YOLOv4 Tiny
 
 An intelligent Pothole Detection system using YOLOv4 Tiny, capable of identifying and categorizing potholes in real-time video streams. The severity level of each pothole (Low, Medium, High) is assessed based on its area in the frame. This system provides a valuable tool for monitoring road conditions and prioritizing maintenance efforts. The repository includes Python code, YOLO model files, and sample data for easy implementation and testing.
