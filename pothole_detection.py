@@ -9,19 +9,19 @@ print(x)
 
 #reading label name from obj.names file
 class_name = []
-with open(r'D:/files/pathole/pothole detection/obj.names', 'r') as f:
+with open(r'utils/obj.names', 'r') as f:
     class_name = [cname.strip() for cname in f.readlines()]
 
 #importing model weights and config file
 #defining the model parameters
-net1 = cv.dnn.readNet(r'D:/files/pathole/pothole detection/yolov4_tiny.weights', r'D:/files/pathole/pothole detection/yolov4_tiny.cfg')
+net1 = cv.dnn.readNet(r'utils/yolov4_tiny.weights', r'utils/yolov4_tiny.cfg')
 net1.setPreferableBackend(cv.dnn.DNN_BACKEND_CUDA)
 net1.setPreferableTarget(cv.dnn.DNN_TARGET_CUDA_FP16)
 model1 = cv.dnn_DetectionModel(net1)
 model1.setInputParams(size=(640, 480), scale=1/255, swapRB=True)
 
 #defining the video source (0 for camera or file name for video)
-cap = cv.VideoCapture(r"D:/files/pathole/pothole detection/test.mp4")
+cap = cv.VideoCapture(r"test.mp4")
 width  = cap.get(3)
 height = cap.get(4)
 result = cv.VideoWriter('result.avi', 
